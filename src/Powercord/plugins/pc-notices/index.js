@@ -21,10 +21,6 @@ module.exports = class Notices extends Plugin {
       this._welcomeNewUser();
       unlink(injectedFile);
     }
-
-    if (window.GLOBAL_ENV.RELEASE_CHANNEL !== 'canary') {
-      this._unsupportedBuild();
-    }
   }
 
   pluginWillUnload () {
@@ -44,10 +40,12 @@ module.exports = class Notices extends Plugin {
   }
 
   async _patchToasts () {
-    const { app } = getModule([ 'app', 'layers' ]);
+    const { app } = await getModule([ 'app', 'layers' ]);
     const Shakeable = await getModuleByDisplayName('Shakeable');
     inject('pc-notices-toast', Shakeable.prototype, 'render', (_, res) => {
-      res.props.children.push(React.createElement(ToastContainer));
+      if (!res.props.children.find(child => child.type && child.type.name === 'ToastContainer')) {
+        res.props.children.push(React.createElement(ToastContainer));
+      }
       return res;
     });
     forceUpdateElement(`.${app}`);

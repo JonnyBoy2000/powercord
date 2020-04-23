@@ -25,15 +25,15 @@ exports.getAppDir = async () => {
     .toString()
     .split('\n')
     .map(s => s.split(' ').filter(Boolean))
-    .find(p => p[4] && (/discord-?canary$/i).test(p[4]) && p.includes('--type=renderer'));
+    .find(p => p[4] && (/discord?$/i).test(p[4]) && p.includes('--type=renderer'));
 
   if (!discordProcess) {
     console.log('Cannot find Discord process, falling back to legacy path detection.');
     const paths = [
-      '/usr/share/discord-canary',
-      '/usr/lib64/discord-canary',
-      '/opt/discord-canary',
-      '/opt/DiscordCanary'
+      '/usr/share/discord',
+      '/usr/lib64/discord',
+      '/opt/discord',
+      '/opt/Discord'
     ];
     const discordPath = paths.find(path => existsSync(path));
     return join(discordPath, 'resources', 'app');

@@ -18,7 +18,7 @@ module.exports = class Tags extends Plugin {
       'tag',
       [],
       'Send, preview and manage your tags',
-      '{c} <view|list|add|edit|delete> <tagName> [tagContent]',
+      '{c} <view|list|add|edit|delete|send> <tagName> [tagContent]',
       (args) => {
         const subcommand = commands[args[0]];
         if (!subcommand) {
